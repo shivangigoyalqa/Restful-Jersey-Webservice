@@ -2,21 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
  <link rel="stylesheet" href="style1.css">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+ <link href='https://fonts.googleapis.com/css?family=Baloo Tamma' rel='stylesheet'>
+ <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <img src="img1.PNG" alt="title image" style="width:100%">
     </br></br>
     <center>
        <h1 style="color:white;">Home Page</h1>
+       
     
-	 <button onclick = "location.href = 'rest/hello/viewall'">View All Comments</button>
-     <button onclick = "location.href = 'rest/hello/YourComments'">View Your Comments</button>
+	<div  id="form"  style="margin-left:12%;margin-right:10%;padding-top:4%;border-radius: 8%;background-color:grey;">
+       
+	 <button onclick = comments()>View All Comments</button>
+     <button onclick = yourcomment()>View Your Comments</button>
      
-     <button onclick = openForm()>Add Comment</button>
+     <button onclick = openForm() >Add Comment</button>
       <button onclick = "location.href = 'index.html'">Start Page</button>
-      <br><br>
+      <div class="all"></div>
+      <div class="your"></div>
+      <br><br><link href='https://fonts.googleapis.com/css?family=Baloo Tamma' rel='stylesheet'>
+   
+      
+      
      <form action="rest/hello/AddComment" method="post" id="myForm" style="display: none;">
     
     
@@ -25,11 +36,139 @@
      <input type="Submit" value = "Add" class="btn btn-info">
      
      </form>
+     <section id="galleries">
+     </section>
      </center>
+     </div>
      <script>
 function openForm() {
   document.getElementById("myForm").style.display = "block";
+  var comment = document.getElementsByClassName('all'), i;
+
+	for (var i = 0; i < comment.length; i ++) {
+	    comment[i].style.display = 'none';
+	} 
+	var comment2 = document.getElementsByClassName('your'), i;
+
+	for (var i = 0; i < comment2.length; i ++) {
+	    comment2[i].style.display = 'none';
+	} 
 }
+function yourcomment()
+{
+	$('.your').empty();
+	var comment = document.getElementsByClassName('all'), i;
+	for (var i = 0; i < comment.length; i ++) {
+	comment[i].style.display = 'none';
+	}
+	
+
+	var comment2 = document.getElementsByClassName('your'), i;
+
+	for (var i = 0; i < comment2.length; i ++) {
+	    comment2[i].style.display = 'block';
+	} 
+	var j=0;
+	
+
+		$.ajax({
+		    url: "http://localhost:8080/RestJersey/rest/hello/YourComments", 
+		    cache: false,
+		    success: function(response) {
+		        result = $(response).find("#result");
+		    			 		
+		        while(j<result.prevObject.length)
+		 
+		{
+		        	var b1 = document.querySelector(".your");
+		   var a1 = document.createElement("div");
+		   
+		   
+		
+		
+		 
+		   var y1 = document.createElement("h4");
+		    y1.textContent = "Name:"+result.prevObject[j].name;
+		  
+		   y1.style.paddingLeft = "1rem";
+		  var z1 = document.createElement("p");
+		  z1.textContent = "Comment:  "+result.prevObject[j].comment;
+		  z1.style.paddingLeft = "1rem";
+		   
+		
+		   a1.appendChild(y1).style.fontFamily='Andada';
+		   a1.appendChild(z1).style.fontFamily='Baloo Tamma';
+		   a1.style.fontSize="25px"
+		     b1.appendChild(a1).style.backgroundColor='white';
+		   
+		     a1.style.margin='10px';
+		     a1.style.borderRadius='10%';
+		     a1.style.border="2px solid black";
+		    
+		     a1.style.borderRadius="50px 20px";
+		     a1.style.backgroundImage = "url('paper.jpeg')";
+		     j++;
+		}
+		        
+		    }  
+		}); 
+	 	
+		}
+function comments()
+{
+	$('.all').empty();
+	var comment = document.getElementsByClassName('your'), i;
+
+	for (var i = 0; i < comment.length; i ++) {
+	    comment[i].style.display = 'none';
+	} 
+	var comment2 = document.getElementsByClassName('all'), i;
+
+	for (var i = 0; i < comment2.length; i ++) {
+	    comment2[i].style.display = 'block';
+	} 
+	var i=0;
+var b = document.querySelector(".all");
+	$.ajax({
+	    url: "http://localhost:8080/RestJersey/rest/hello/viewall", 
+	    cache: false,
+	    success: function(response) {
+	        result = $(response).find("#result");
+	 
+	        while(i<result.prevObject.length)
+	 
+	{
+
+	   var a = document.createElement("div");
+	   
+	
+	
+	 
+	   var y = document.createElement("h4");
+	    y.textContent = "Name:"+result.prevObject[i].name;
+	  
+	   y.style.paddingLeft = "1rem";
+	  var z = document.createElement("p");
+	  z.textContent = "Comment:  "+result.prevObject[i].comment;
+	  z.style.paddingLeft = "1rem";
+	   
+	
+	   a.appendChild(y).style.fontFamily='arial';
+	   a.appendChild(z).style.fontFamily='Baloo Tamma';
+	     b.appendChild(a);
+	     a.style.margin='10px';
+	     a.style.borderRadius='10%';
+	     a.style.border="2px solid black";
+	     a.style.fontSize="25px";
+	     a.style.borderRadius="50px 20px";
+	     a.style.backgroundImage = "url('paper.jpeg')";
+	  i++;
+	}
+	        
+	    }  
+	}); 
+ 	
+	}
 </script>
 <footer>
 <div class="footer" style="margin-bottom:0px;position:fixed">
@@ -41,3 +180,4 @@ function openForm() {
 </footer>
 </body>
 </html>
+
